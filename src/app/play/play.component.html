@@ -1,0 +1,5 @@
+<div>
+  <div *ngFor="let row of field">
+   <button *ngFor="let cell of row.cells" (click)="onLeftClick($event, cell)" (contextmenu)="onRightClick($event, cell)">{{cell.mine}},{{cell.status}},{{cell.numberShown}}</button>
+  </div>
+</div>
