@@ -13,7 +13,6 @@ import { RouterModule } from '@angular/router';
   imports: [
     BrowserModule,
     RouterModule.forRoot([
-      {path: '', component: AppComponent},
       {path: 'play/:params', component: PlayComponent}
     ])
   ],
