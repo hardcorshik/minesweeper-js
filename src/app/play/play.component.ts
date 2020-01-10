@@ -53,6 +53,8 @@ export class PlayComponent implements OnInit {
       cell.numberShown = this.calculateNumberShown(cell.x, cell.y);
       if (cell.numberShown == 0) this.onLeftClick(true, cell);
     }
+
+    if (this.isVictory()) this.win();
   }
   public onRightClick(event: Event, cell: ICell) {
     switch (cell.status) {
@@ -70,12 +72,26 @@ export class PlayComponent implements OnInit {
     }
     return false;
   }
+  public isHidden(cell: ICell) {
+    return cell.status == CellStatus.Hidden;
+  }
+  public isFlag(cell: ICell) {
+    return cell.status == CellStatus.Marked;
+  }
+  public isRevealed(cell: ICell) {
+    return cell.status == CellStatus.Revealed;
+  }
+  public isQuestion(cell: ICell) {
+    return cell.status == CellStatus.Question;
+  }
+
   // Used when player click on a mine - reveals all cells
   private lose(xin: number, yin: number) {
     this.field.forEach(row => {
       row.cells.forEach(cell => cell.status = CellStatus.Revealed);
     });
-    alert("you lost (" + xin + "," + yin + ")");
+    let userInput = confirm("Oh no, you clicked a mine. Restart?");
+    if (userInput) this.ngOnInit();
   }
   // Calculates number shown on the cell
   private calculateNumberShown (xin: number, yin: number): number {
@@ -91,7 +107,11 @@ export class PlayComponent implements OnInit {
   private areaClear(cell: ICell): void {
     let cellsToCheck = this.getNearbyCells(cell.x, cell.y);
     if (cell.numberShown == 0) return cellsToCheck.forEach(cell => this.onLeftClick(false, cell));
-    let allowClear: boolean = cellsToCheck.every(cell => {return !cell.mine || cell.status != CellStatus.Hidden;});
+    let numbers = cell.numberShown;
+    cellsToCheck.forEach(cell => {
+      if (cell.status == CellStatus.Marked) numbers--;
+    });
+    let allowClear: boolean = numbers == 0;
     if (allowClear) return cellsToCheck.forEach(cell => this.onLeftClick(false, cell));
   }
   // Finds all surrounding cells from the board
@@ -101,7 +121,6 @@ export class PlayComponent implements OnInit {
     let topRow: IRow = this.field.find(x => x.rowNumber == yin - 1);
     let middleRow: IRow = this.field.find(x => x.rowNumber == yin);
     let bottomRow: IRow = this.field.find(x => x.rowNumber == yin + 1);
-    console.log(topRow);
 
     if (topRow) {
       cellsToCheck.push(topRow.cells.find(cell => cell.x == xin - 1));
@@ -120,7 +139,17 @@ export class PlayComponent implements OnInit {
 
     return cellsToCheck.filter(item => item != undefined);
   }
-
+  // Check for victory
+  private isVictory(): boolean {
+    return this.field.every(row => row.cells.every(cell => {
+      return (!cell.mine && cell.status == CellStatus.Revealed) || (cell.mine && cell.status != CellStatus.Revealed);
+    }));
+  }
+  // Win
+  private win() {
+    let userChoice = confirm("Congratulations! You won! Restart?");
+    if (userChoice) this.ngOnInit();
+  }
 }
 
 //Difficulty presents

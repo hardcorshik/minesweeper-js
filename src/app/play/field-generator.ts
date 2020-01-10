@@ -28,12 +28,14 @@ export class FieldGenerator {
     let random = Math.random();
     let passLimit = minesLeft / cellsLeft;
     let isMine: boolean = random <= passLimit;
+    let numberShown = 0;
+    if (isMine) numberShown = 99;
     return {
       x: x,
       y: y,
       mine: isMine,
       status: CellStatus.Hidden,
-      numberShown: 0
+      numberShown: numberShown
     };
   }
 

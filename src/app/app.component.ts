@@ -7,4 +7,8 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'minesweeper-js';
+
+  public customX: number = 10;
+  public customY: number = 10;
+  public customMines: number = 10;
 }

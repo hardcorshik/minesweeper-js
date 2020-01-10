@@ -2,5 +2,9 @@
   <button [routerLink]="['play', 'easy']">Easy</button>
   <button [routerLink]="['play', 'normal']">Normal</button>
   <button [routerLink]="['play', 'hard']">Hard</button>
+   or <button [routerLink]="['play', customX + '&' + customY + '&' + customMines]">Custom</button>
+  Width <input class="input" [(ngModel)]="customX">
+  Height <input class="input" [(ngModel)]="customY">
+  Mines <input class="input" [(ngModel)]="customMines">
 </div>
 <router-outlet></router-outlet>

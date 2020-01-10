@@ -1,6 +1,12 @@
 <br><br><br>
 <div>
   <div *ngFor="let row of field">
-   <button *ngFor="let cell of row.cells" (click)="onLeftClick(true, cell)" (contextmenu)="onRightClick($event, cell)">{{cell.mine}},{{cell.status}},{{cell.numberShown}}</button>
+<!--   <button *ngFor="let cell of row.cells" (click)="onLeftClick(true, cell)" (contextmenu)="onRightClick($event, cell)">{{cell.mine}},{{cell.status}},{{cell.numberShown}}</button>-->
+    <button *ngFor="let cell of row.cells" (click)="onLeftClick(true, cell)" (contextmenu)="onRightClick($event, cell)">
+      <p class="cell" *ngIf="isHidden(cell)"></p>
+      <p class="cell" *ngIf="isFlag(cell)">F</p>
+      <p class="cell" *ngIf="isQuestion(cell)">?</p>
+      <p class="cell" *ngIf="isRevealed(cell)">{{cell.numberShown}}</p>
+    </button>
   </div>
 </div>
