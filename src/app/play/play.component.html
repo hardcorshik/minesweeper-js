@@ -1,14 +1,15 @@
 <br>
 <button (click)="newField()">New Field</button>
-<br><br>
-<div>
+<br>
+Time Counter: {{timeCounter}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mine Counter: {{mineCounter}}
+<br>
+<div class="field">
   <div *ngFor="let row of field">
-<!--   <button *ngFor="let cell of row.cells" (click)="onLeftClick(true, cell)" (contextmenu)="onRightClick($event, cell)">{{cell.mine}},{{cell.status}},{{cell.numberShown}}</button>-->
     <button *ngFor="let cell of row.cells" (click)="onLeftClick(true, cell)" (contextmenu)="onRightClick($event, cell)">
-      <p class="cell" *ngIf="isHidden(cell)"></p>
-      <p class="cell" *ngIf="isFlag(cell)">F</p>
-      <p class="cell" *ngIf="isQuestion(cell)">?</p>
-      <p class="cell" *ngIf="isRevealed(cell)">{{cell.numberShown}}</p>
+      <div class="cell" *ngIf="isHidden(cell)">&nbsp;</div>
+      <div class="cell" *ngIf="isFlag(cell)">F</div>
+      <div class="cell" *ngIf="isQuestion(cell)">?</div>
+      <div class="cell" *ngIf="isRevealed(cell)">{{cell.numberShown}}</div>
     </button>
   </div>
 </div>

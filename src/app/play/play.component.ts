@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {CellStatus, ICell, IFieldParameters, IRow} from './field-interfaces';
 import {FieldGenerator} from './field-generator';
+import {timer} from 'rxjs';
 
 @Component({
   selector: 'app-play',
@@ -10,14 +11,21 @@ import {FieldGenerator} from './field-generator';
 })
 export class PlayComponent implements OnInit {
   private setup: string;
+  private stopwatch;
+  private stopwatchRunning: boolean = false;
   public field: IRow[] = [];
+  public mineCounter: number;
+  public timeCounter: number;
 
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       this.setup = params.get('params');
-      this.field = FieldGenerator.generateField(PlayComponent.getParameters(this.setup));
+      let genParams = PlayComponent.getParameters(this.setup);
+      this.mineCounter = genParams.mines;
+      this.timeCounter = 0;
+      this.field = FieldGenerator.generateField(genParams);
     });
   }
 
@@ -39,6 +47,7 @@ export class PlayComponent implements OnInit {
 
   // Left & Right Click Handlers
   public onLeftClick(allowArea: boolean, cell: ICell) {
+    if (!this.stopwatchRunning) this.startStopwatch();
     if (cell.status != CellStatus.Hidden && !allowArea) return false;
     if (cell.status != CellStatus.Hidden && allowArea) {
       this.areaClear(cell);
@@ -60,9 +69,11 @@ export class PlayComponent implements OnInit {
     switch (cell.status) {
       case CellStatus.Hidden:
         cell.status = CellStatus.Marked;
+        this.mineCounter--;
         break;
       case CellStatus.Marked:
         cell.status = CellStatus.Question;
+        this.mineCounter++;
         break;
       case CellStatus.Question:
         cell.status = CellStatus.Hidden;
@@ -84,7 +95,10 @@ export class PlayComponent implements OnInit {
   public isQuestion(cell: ICell) {
     return cell.status == CellStatus.Question;
   }
-  public newField() { this.ngOnInit(); }
+  public newField() {
+    if (this.stopwatch) this.stopStopwatch();
+    this.ngOnInit();
+  }
 
   // Used when player click on a mine - reveals all cells
   private lose(xin: number, yin: number) {
@@ -97,6 +111,7 @@ export class PlayComponent implements OnInit {
     });
     let userInput = confirm("Oh no, you clicked a mine. Restart?");
     if (userInput) this.ngOnInit();
+    this.stopStopwatch();
   }
   // Calculates number shown on the cell
   private calculateNumberShown (xin: number, yin: number): number {
@@ -157,6 +172,17 @@ export class PlayComponent implements OnInit {
     });
     let userChoice = confirm("Congratulations! You won! Restart?");
     if (userChoice) this.ngOnInit();
+    this.stopStopwatch();
+  }
+  // Stopwatch
+  private startStopwatch() {
+    this.stopwatchRunning = true;
+    const source = timer(1000, 1000);
+    this.stopwatch = source.subscribe(() => this.timeCounter++);
+  }
+  private stopStopwatch() {
+    this.stopwatchRunning = false;
+    this.stopwatch.unsubscribe();
   }
 }
 
