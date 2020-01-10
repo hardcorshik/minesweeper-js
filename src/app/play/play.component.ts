@@ -84,11 +84,16 @@ export class PlayComponent implements OnInit {
   public isQuestion(cell: ICell) {
     return cell.status == CellStatus.Question;
   }
+  public newField() { this.ngOnInit(); }
 
   // Used when player click on a mine - reveals all cells
   private lose(xin: number, yin: number) {
     this.field.forEach(row => {
-      row.cells.forEach(cell => cell.status = CellStatus.Revealed);
+      row.cells.forEach(cell => {
+        cell.status = CellStatus.Revealed;
+        if (cell.mine) return;
+        cell.numberShown = this.calculateNumberShown(cell.x, cell.y);
+      });
     });
     let userInput = confirm("Oh no, you clicked a mine. Restart?");
     if (userInput) this.ngOnInit();
@@ -147,6 +152,9 @@ export class PlayComponent implements OnInit {
   }
   // Win
   private win() {
+    this.field.forEach(row => {
+      row.cells.forEach(cell => cell.status = CellStatus.Revealed);
+    });
     let userChoice = confirm("Congratulations! You won! Restart?");
     if (userChoice) this.ngOnInit();
   }
