@@ -34,9 +34,10 @@ export class PlayComponent implements OnInit {
 
   private static getParameters(input: string): IFieldParameters {
     switch (input) {
-      case "easy": return easy;
+      case "beginner": return beginner;
       case "normal": return normal;
-      case "hard": return hard;
+      case "expert": return expert;
+      case "winmax": return winmax;
       default:
         let params = input.split('&');
 
@@ -51,11 +52,12 @@ export class PlayComponent implements OnInit {
   // Left & Right Click Handlers
   public onLeftClick(allowArea: boolean, cell: ICell) {
     if (!this.stopwatchRunning) this.startStopwatch();
-    if (cell.status != CellStatus.Hidden && !allowArea) return false;
-    if (cell.status != CellStatus.Hidden && allowArea) {
+    if (!this.isHidden(cell) && !allowArea) return false;
+    if (!this.isHidden(cell) && allowArea) {
       this.areaClear(cell);
       return false;
     }
+    if (this.isFlag(cell) || this.isQuestion(cell)) return false;
     if (cell.mine) {
       this.lose(cell.x, cell.y);
       cell.status = CellStatus.Revealed;
@@ -86,6 +88,8 @@ export class PlayComponent implements OnInit {
     }
     return false;
   }
+
+  // Cell Status getters for html
   public isHidden(cell: ICell) {
     return cell.status == CellStatus.Hidden;
   }
@@ -98,29 +102,10 @@ export class PlayComponent implements OnInit {
   public isQuestion(cell: ICell) {
     return cell.status == CellStatus.Question;
   }
+
   public newField() {
     if (this.stopwatch) this.stopStopwatch();
     this.ngOnInit();
-  }
-
-  // Used when player click on a mine - reveals all cells
-  private lose(xin: number, yin: number) {
-    this.field.forEach(row => {
-      row.cells.forEach(cell => {
-        cell.status = CellStatus.Revealed;
-        if (cell.mine) {
-          return;
-        }
-        cell.numberShown = this.calculateNumberShown(cell.x, cell.y);
-      });
-    });
-    setTimeout(() => {
-      let userInput = confirm('Oh no, you clicked a mine. Restart?');
-      if (userInput) {
-        this.ngOnInit();
-      }
-      this.stopStopwatch();
-    }, 0);
   }
 
   // Calculates number shown on the cell
@@ -169,24 +154,41 @@ export class PlayComponent implements OnInit {
 
     return cellsToCheck.filter(item => item != undefined);
   }
-  // Check for victory
+  // Check if all "good" cells are clicked
   private isVictory(): boolean {
     return this.field.every(row => row.cells.every(cell => {
       return (!cell.mine && cell.status == CellStatus.Revealed) || (cell.mine && cell.status != CellStatus.Revealed);
     }));
   }
-  // Win
+  // Used when player has all "good" cells revealed
   private win() {
     this.field.forEach(row => {
       row.cells.forEach(cell => cell.status = CellStatus.Revealed);
     });
     setTimeout(() => {
       let userChoice = confirm('Congratulations! You won! Restart?');
-      if (userChoice) {
+      if (userChoice) { this.ngOnInit(); }
+      this.stopStopwatch();
+    });
+  }
+  // Used when player click on a mine - reveals all cells
+  private lose(xin: number, yin: number) {
+    this.field.forEach(row => {
+      row.cells.forEach(cell => {
+        cell.status = CellStatus.Revealed;
+        if (cell.mine) {
+          return;
+        }
+        cell.numberShown = this.calculateNumberShown(cell.x, cell.y);
+      });
+    });
+    setTimeout(() => {
+      let userInput = confirm('Oh no, you clicked a mine. Restart?');
+      if (userInput) {
         this.ngOnInit();
       }
       this.stopStopwatch();
-    });
+    }, 1);
   }
 
   // Stopwatch
@@ -201,7 +203,8 @@ export class PlayComponent implements OnInit {
   }
 }
 
-//Difficulty presents
-const easy: IFieldParameters = { xl: 9, yl: 9, mines: 10 };
+//Difficulty presets
+const beginner: IFieldParameters = { xl: 9, yl: 9, mines: 10 };
 const normal: IFieldParameters = { xl: 16, yl: 16, mines: 40};
-const hard: IFieldParameters = { xl: 24, yl: 24, mines: 99 };
+const expert: IFieldParameters = { xl: 30, yl: 16, mines: 99 };
+const winmax: IFieldParameters = { xl: 30, yl: 24, mines: 200 };

@@ -5,11 +5,13 @@ import { AppComponent } from './app.component';
 import { PlayComponent } from './play/play.component';
 import { RouterModule } from '@angular/router';
 import {FormsModule} from '@angular/forms';
+import { PreferencesComponent } from './preferences/preferences.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    PlayComponent
+    PlayComponent,
+    PreferencesComponent
   ],
   imports: [
     BrowserModule,

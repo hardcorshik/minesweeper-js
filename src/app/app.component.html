@@ -1,7 +1,8 @@
 <div>
-  <button [routerLink]="['play', 'easy']">Easy</button>
-  <button [routerLink]="['play', 'normal']">Normal</button>
-  <button [routerLink]="['play', 'hard']">Hard</button>
+  <button [routerLink]="['play', 'beginner']">Beginner</button>
+  <button [routerLink]="['play', 'normal']">Intermediate</button>
+  <button [routerLink]="['play', 'expert']">Expert</button>
+  <button [routerLink]="['play', 'winmax']">24x30</button>
    or <button [routerLink]="['play', customX + '&' + customY + '&' + customMines]">Custom</button>
   Width <input class="input" [(ngModel)]="customX">
   Height <input class="input" [(ngModel)]="customY">
