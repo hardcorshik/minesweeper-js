@@ -17,7 +17,8 @@ import { PreferencesComponent } from './preferences/preferences.component';
     BrowserModule,
     FormsModule,
     RouterModule.forRoot([
-      {path: 'play/:params', component: PlayComponent}
+      {path: 'play/:params', component: PlayComponent},
+      {path: 'options', component: PreferencesComponent}
     ])
   ],
   providers: [],

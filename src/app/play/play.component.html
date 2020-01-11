@@ -7,9 +7,11 @@ Time Counter: {{timeCounter}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mine Counter: {
   <div class="row" *ngFor="let row of field">
     <div *ngFor="let cell of row.cells">
       <div class="holder" (click)="onLeftClick(true, cell)" (contextmenu)="onRightClick($event, cell)"
-           [ngClass]="{'hidden': isHidden(cell)}">
+           [ngStyle]="{
+           'background-color': getColor(cell),
+            'color': getOppositeColor(cell)}">
         <div *ngIf="isHidden(cell)">&nbsp;</div>
-        <i class="fa fa-flag" aria-hidden="true" *ngIf="isFlag(cell)"></i>
+        <i [ngStyle]="{'color': getFlagColor()}" class="fa fa-flag" aria-hidden="true" *ngIf="isFlag(cell)"></i>
         <i class="fa fa-question" aria-hidden="true" *ngIf="isQuestion(cell)"></i>
         <i class="fa fa-bomb" aria-hidden="true" *ngIf="isRevealed(cell) && cell.mine"></i>
         <div *ngIf="isRevealed(cell) && !cell.mine && cell.numberShown != 0">{{cell.numberShown}}</div>

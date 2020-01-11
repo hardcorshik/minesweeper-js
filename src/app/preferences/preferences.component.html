@@ -1,3 +1,17 @@
 <div>
-  Primary Color: <input type="color" [(ngModel)]="" />
+  <br>
+  <div>Primary Color: <input type="color" [(ngModel)]="primaryColor"/></div>
+  <br>
+  <div>Secondary Color: <input type="color" [(ngModel)]="secondaryColor"/></div>
+  <br>
+  <div>Override Flag Color
+    <label class="switch">
+      <input type="checkbox" [(ngModel)]="overrideFlag">
+      <span class="slider round"></span>
+    </label>
+    <br>
+    <div *ngIf="overrideFlag">&emsp;Flag Color: <input type="color" [(ngModel)]="flagColor"/></div>
+  </div>
 </div>
+
+<button (click)="save()">Save</button>

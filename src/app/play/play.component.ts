@@ -93,23 +93,46 @@ export class PlayComponent implements OnInit {
   public isHidden(cell: ICell) {
     return cell.status == CellStatus.Hidden;
   }
+
   public isFlag(cell: ICell) {
     return cell.status == CellStatus.Marked;
   }
+
   public isRevealed(cell: ICell) {
     return cell.status == CellStatus.Revealed;
   }
+
   public isQuestion(cell: ICell) {
     return cell.status == CellStatus.Question;
   }
 
+  public getColor(cell: ICell) {
+    if (this.isRevealed(cell)) {
+      return localStorage.getItem('secondary-color') || '#FFFFFF';
+    }
+    return localStorage.getItem('primary-color') || '#808080';
+  }
+
+  public getOppositeColor(cell: ICell) {
+    if (this.isRevealed(cell)) {
+      return localStorage.getItem('primary-color') || '#808080';
+    }
+    return localStorage.getItem('secondary-color') || '#FFFFFF';
+  }
+
+  public getFlagColor(cell: ICell) {
+    return localStorage.getItem('flag-color') || '#FFFFFF';
+  }
+
   public newField() {
-    if (this.stopwatch) this.stopStopwatch();
+    if (this.stopwatch) {
+      this.stopStopwatch();
+    }
     this.ngOnInit();
   }
 
   // Calculates number shown on the cell
-  private calculateNumberShown (xin: number, yin: number): number {
+  private calculateNumberShown(xin: number, yin: number): number {
     let cellsToCheck = this.getNearbyCells(xin, yin);
 
     let output: number = 0;
