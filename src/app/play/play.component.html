@@ -4,12 +4,16 @@
 Time Counter: {{timeCounter}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mine Counter: {{mineCounter}}
 <br>
 <div class="field">
-  <div *ngFor="let row of field">
-    <button *ngFor="let cell of row.cells" (click)="onLeftClick(true, cell)" (contextmenu)="onRightClick($event, cell)">
-      <div class="cell" *ngIf="isHidden(cell)">&nbsp;</div>
-      <div class="cell" *ngIf="isFlag(cell)">F</div>
-      <div class="cell" *ngIf="isQuestion(cell)">?</div>
-      <div class="cell" *ngIf="isRevealed(cell)">{{cell.numberShown}}</div>
-    </button>
+  <div class="row" *ngFor="let row of field">
+    <div *ngFor="let cell of row.cells">
+      <div class="holder" (click)="onLeftClick(true, cell)" (contextmenu)="onRightClick($event, cell)"
+           [ngClass]="{'hidden': isHidden(cell)}">
+        <div *ngIf="isHidden(cell)">&nbsp;</div>
+        <i class="fa fa-flag" aria-hidden="true" *ngIf="isFlag(cell)"></i>
+        <i class="fa fa-question" aria-hidden="true" *ngIf="isQuestion(cell)"></i>
+        <i class="fa fa-bomb" aria-hidden="true" *ngIf="isRevealed(cell) && cell.mine"></i>
+        <div *ngIf="isRevealed(cell) && !cell.mine && cell.numberShown != 0">{{cell.numberShown}}</div>
+      </div>
+    </div>
   </div>
 </div>

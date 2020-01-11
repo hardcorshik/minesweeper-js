@@ -21,6 +21,9 @@ export class PlayComponent implements OnInit {
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
+      if (this.stopwatchRunning) {
+        this.stopStopwatch();
+      }
       this.setup = params.get('params');
       let genParams = PlayComponent.getParameters(this.setup);
       this.mineCounter = genParams.mines;
@@ -105,14 +108,21 @@ export class PlayComponent implements OnInit {
     this.field.forEach(row => {
       row.cells.forEach(cell => {
         cell.status = CellStatus.Revealed;
-        if (cell.mine) return;
+        if (cell.mine) {
+          return;
+        }
         cell.numberShown = this.calculateNumberShown(cell.x, cell.y);
       });
     });
-    let userInput = confirm("Oh no, you clicked a mine. Restart?");
-    if (userInput) this.ngOnInit();
-    this.stopStopwatch();
+    setTimeout(() => {
+      let userInput = confirm('Oh no, you clicked a mine. Restart?');
+      if (userInput) {
+        this.ngOnInit();
+      }
+      this.stopStopwatch();
+    }, 0);
   }
+
   // Calculates number shown on the cell
   private calculateNumberShown (xin: number, yin: number): number {
     let cellsToCheck = this.getNearbyCells(xin, yin);
@@ -170,10 +180,15 @@ export class PlayComponent implements OnInit {
     this.field.forEach(row => {
       row.cells.forEach(cell => cell.status = CellStatus.Revealed);
     });
-    let userChoice = confirm("Congratulations! You won! Restart?");
-    if (userChoice) this.ngOnInit();
-    this.stopStopwatch();
+    setTimeout(() => {
+      let userChoice = confirm('Congratulations! You won! Restart?');
+      if (userChoice) {
+        this.ngOnInit();
+      }
+      this.stopStopwatch();
+    });
   }
+
   // Stopwatch
   private startStopwatch() {
     this.stopwatchRunning = true;

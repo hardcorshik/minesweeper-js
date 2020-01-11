@@ -1,4 +1,23 @@
-.cell {
-  min-width: 15px;
-  min-height: 15px;
+.hidden {
+  background: lightgray;
+}
+
+.row {
+  display: flex;
+}
+
+.field {
+  overflow-x: scroll;
+}
+
+.holder {
+  border-left: 1px solid gray;
+  border-top: 1px solid gray;
+  border-bottom: 1px solid gray;
+  border-right: 1px solid gray;
+  cursor: hand;
+  height: 30px;
+  width: 30px;
+  text-align: center;
+  line-height: 30px;
 }
