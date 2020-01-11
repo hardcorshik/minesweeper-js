@@ -120,7 +120,7 @@ export class PlayComponent implements OnInit {
     return localStorage.getItem('secondary-color') || '#FFFFFF';
   }
 
-  public getFlagColor(cell: ICell) {
+  public getFlagColor() {
     return localStorage.getItem('flag-color') || '#FFFFFF';
   }
 
