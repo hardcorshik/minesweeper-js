@@ -1,13 +1,9 @@
-.highlight {
-  background-color: greenyellow;
-}
-
 .row {
   display: flex;
 }
 
 .field {
-  overflow-x: scroll;
+  overflow-x: auto;
 }
 
 .holder {

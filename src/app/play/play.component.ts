@@ -30,6 +30,7 @@ export class PlayComponent implements OnInit {
       this.mineCounter = genParams.mines;
       this.timeCounter = 0;
       this.field = FieldGenerator.generateField(genParams);
+      this.debug = Boolean(localStorage.getItem("debugger")) || false;
     });
   }
 
@@ -108,6 +109,7 @@ export class PlayComponent implements OnInit {
   }
 
   public getColor(cell: ICell) {
+    if (this.debug && cell.mine) return '#0000FF';
     if (this.isRevealed(cell)) {
       return localStorage.getItem('secondary-color') || '#FFFFFF';
     }
@@ -227,9 +229,15 @@ export class PlayComponent implements OnInit {
   }
 
   // Cheats for debugging
-  public enableDebug() {
+  public enableDebug(isCode: boolean) {
+    if (!isCode) return;
     this.debug = true;
-    console.log("Debug mode on")
+    localStorage.setItem("debugger", "true");
+  }
+  public disableDebug(isExit: boolean) {
+    if (!isExit) return;
+    this.debug = false;
+    localStorage.removeItem("debugger");
   }
 }
 
