@@ -3,7 +3,7 @@
 <br>
 Time Counter: {{timeCounter}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Mine Counter: {{mineCounter}}
 <br>
-<div class="field">
+<div class="field"  appDebug (codeEnter)="enableDebug($event)" (codeExit)="disableDebug($event)">
   <div class="row" *ngFor="let row of field">
     <div *ngFor="let cell of row.cells">
       <div class="holder" (click)="onLeftClick(true, cell)" (contextmenu)="onRightClick($event, cell)"

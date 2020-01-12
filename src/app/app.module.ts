@@ -6,12 +6,14 @@ import { PlayComponent } from './play/play.component';
 import { RouterModule } from '@angular/router';
 import {FormsModule} from '@angular/forms';
 import { PreferencesComponent } from './preferences/preferences.component';
+import { DebugDirective } from './directives/debug.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
     PlayComponent,
-    PreferencesComponent
+    PreferencesComponent,
+    DebugDirective
   ],
   imports: [
     BrowserModule,

@@ -16,6 +16,7 @@ export class PlayComponent implements OnInit {
   public field: IRow[] = [];
   public mineCounter: number;
   public timeCounter: number;
+  public debug: boolean = false;
 
   constructor(private route: ActivatedRoute) {}
 
@@ -29,6 +30,7 @@ export class PlayComponent implements OnInit {
       this.mineCounter = genParams.mines;
       this.timeCounter = 0;
       this.field = FieldGenerator.generateField(genParams);
+      this.debug = Boolean(localStorage.getItem("debugger")) || false;
     });
   }
 
@@ -107,6 +109,7 @@ export class PlayComponent implements OnInit {
   }
 
   public getColor(cell: ICell) {
+    if (this.debug && cell.mine) return '#0000FF';
     if (this.isRevealed(cell)) {
       return localStorage.getItem('secondary-color') || '#FFFFFF';
     }
@@ -223,6 +226,18 @@ export class PlayComponent implements OnInit {
   private stopStopwatch() {
     this.stopwatchRunning = false;
     this.stopwatch.unsubscribe();
+  }
+
+  // Cheats for debugging
+  public enableDebug(isCode: boolean) {
+    if (!isCode) return;
+    this.debug = true;
+    localStorage.setItem("debugger", "true");
+  }
+  public disableDebug(isExit: boolean) {
+    if (!isExit) return;
+    this.debug = false;
+    localStorage.removeItem("debugger");
   }
 }
 

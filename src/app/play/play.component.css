@@ -1,13 +1,9 @@
-.hidden {
-  background: lightgray;
-}
-
 .row {
   display: flex;
 }
 
 .field {
-  overflow-x: scroll;
+  overflow-x: auto;
 }
 
 .holder {
