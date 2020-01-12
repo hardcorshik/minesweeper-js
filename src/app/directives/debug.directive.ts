@@ -10,7 +10,7 @@ export class DebugDirective {
 
   @Output() private codeEnter: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() private codeExit: EventEmitter<boolean> = new EventEmitter<boolean>();
-  private sequence: string[] = [];
+  private sequence: string[] = new Array(11);
   private secret: string[] = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a", "Enter"];
 
   @HostListener('document:keydown', ['$event'])
