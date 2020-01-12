@@ -16,6 +16,7 @@ export class PlayComponent implements OnInit {
   public field: IRow[] = [];
   public mineCounter: number;
   public timeCounter: number;
+  public debug: boolean = false;
 
   constructor(private route: ActivatedRoute) {}
 
@@ -223,6 +224,12 @@ export class PlayComponent implements OnInit {
   private stopStopwatch() {
     this.stopwatchRunning = false;
     this.stopwatch.unsubscribe();
+  }
+
+  // Cheats for debugging
+  public enableDebug() {
+    this.debug = true;
+    console.log("Debug mode on")
   }
 }
 
