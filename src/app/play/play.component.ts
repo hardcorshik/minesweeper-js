@@ -52,8 +52,8 @@ export class PlayComponent implements OnInit {
   // Left & Right Click Handlers
   public onLeftClick(allowArea: boolean, cell: ICell) {
     if (!this.stopwatchRunning) this.startStopwatch();
-    if (!this.isHidden(cell) && !allowArea) return false;
-    if (!this.isHidden(cell) && allowArea) {
+    if (this.isRevealed(cell) && !allowArea) return false;
+    if (this.isRevealed(cell) && allowArea) {
       this.areaClear(cell);
       return false;
     }
