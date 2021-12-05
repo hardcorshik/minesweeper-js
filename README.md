@@ -4,4 +4,4 @@ This is just a project I made for fun and also because I need to practice Typesc
 Uses local storage for some simple settings.\
 Controls are the same that of a normal minesweeper.
 
-Play it [here](https://hardcorshik31.github.io/minesweeper-js/)
+Play it [here](https://hardcorshik.github.io/minesweeper-js/)
